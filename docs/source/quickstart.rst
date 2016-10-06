@@ -1,16 +1,22 @@
 .. _setup:
 
-
 Quickstart
 ==========
 
 .. only:: servlet
 
-  This quickstart demonstrates the fastest way to enable Stormpath in a Servlet 3.0 (or later) Java web application.  It should take about 5 minutes start to finish.  Let's get started!
+  This quickstart demonstrates the fastest way to enable Stormpath in a Servlet 3.0 (or later) Java web application.
+  It should take about 5 minutes start to finish.  Let's get started!
 
 .. only:: springboot
 
-  This quickstart demonstrates the fastest way to enable Stormpath in a Spring Boot web application.  It should take about 5 minutes start to finish.  Let's get started!
+  This quickstart demonstrates the fastest way to enable Stormpath in a Spring Boot web application.  It should take
+  about 5 minutes start to finish.  Let's get started!
+
+.. only:: sczuul
+
+  This quickstart demonstrates the fastest way to enable Stormpath in a Spring Cloud Zuul reverse proxy/gateway.
+  It should take about 5 minutes start to finish.  Let's get started!
 
 Topics:
 
@@ -22,14 +28,16 @@ Topics:
 
 .. include:: stormpath-setup.txt
 
+Add the |project|
+-----------------
+
+.. _dependency-jar:
+
 .. only:: servlet
 
   .. _servlet-plugin-jar:
 
-  Add the Stormpath Java Servlet Plugin
-  -------------------------------------
-
-  This step allows you to deploy Stormpath *without a single line of code or configuration*.  How amazing is that? Here's how.
+  This step allows you to deploy Stormpath *without a single line of code or configuration*.  How amazing is that?
 
   Using your favorite dependency resolution build tool like Maven or Gradle, ensure your web (.war) project/module depends on stormpath-servlet-plugin-|version|.jar. For example:
 
@@ -57,13 +65,8 @@ Topics:
 
 .. only:: springboot
 
-  .. _dependency-jar:
-
-  Add the Stormpath Default Spring Boot Starter
-  ---------------------------------------------
-
   This step allows you to enable Stormpath in a Spring Boot web app with *very minimal* configuration.
-  It includes Stormpath Spring Security, Stormpath Spring WebMVC and Stormpath Thymeleaf templates. How amazing is that? Here's how.
+  It includes Stormpath Spring Security, Stormpath Spring WebMVC and Stormpath Thymeleaf templates.
 
   Using your favorite dependency resolution build tool like Maven or Gradle, add the stormpath-default-spring-boot-starter-|version|.jar to your project dependencies. For example:
 
@@ -85,11 +88,47 @@ Topics:
           compile 'com.stormpath.spring:stormpath-default-spring-boot-starter:\ |version|\ '
       }
 
+
+.. only:: sczuul
+
+  This step allows you to enable Stormpath in a Spring Cloud Zuul proxy/gateway project with *very minimal* configuration.
+  It includes Stormpath Spring Security, Stormpath Spring WebMVC and Stormpath Thymeleaf templates.
+
+  Using your favorite dependency resolution build tool like Maven or Gradle, add the stormpath-zuul-spring-cloud-starter-|version|.jar to your project dependencies. For example:
+
+  **Maven**:
+
+  .. parsed-literal::
+
+      <dependency>
+          <groupId>com.stormpath.spring</groupId>
+          <artifactId>stormpath-zuul-spring-cloud-starter</artifactId>
+          <version>\ |version|\ </version>
+      </dependency>
+
+  **Gradle**:
+
+  .. parsed-literal::
+
+      dependencies {
+          compile 'com.stormpath.spring:stormpath-zuul-spring-cloud-starter:\ |version|\ '
+      }
+
+
+.. only:: springboot or sczuul
+
   Spring Security
   ^^^^^^^^^^^^^^^
 
-  The Stormpath Default Spring Boot starter assumes Spring Security by default.  But to ensure they work
-  together, you will need a Spring Security configuration class and apply the ``stormpath()`` hook:
+  .. only:: sczuul
+
+    The |project| assumes Spring Security will be used to secure your Zuul proxy/gateway by default.  To ensure this
+    works correctly, you will need a Spring Security configuration class and apply the ``stormpath()`` hook:
+
+  .. only:: springboot
+
+    The |project| assumes Spring Security by default.  But to ensure they work
+    together, you will need a Spring Security configuration class and apply the ``stormpath()`` hook:
 
   .. code-block:: java
       :emphasize-lines: 7
@@ -113,36 +152,94 @@ Topics:
 
   If you do not want to use Spring Security, do not add the ``SpringSecurityWebAppConfig`` class shown above (or just comment out the ``http.apply(stormpath())`` line if you do not want to remove the class).  Also set the following two config properties:
 
-    .. code-block:: properties
+  .. code-block:: yaml
 
-        # disable Stormpath's Spring Security support:
-        stormpath.spring.security.enabled = false
+    # disable Stormpath's Spring Security support:
+    stormpath:
+      spring:
+        security:
+          enabled: false
 
-        # disable Spring Security entirely:
-        security.basic.enabled = false
+    # disable Spring Security entirely:
+    security:
+      basic:
+        enabled: false
 
-  That's it!  You're ready to start using Stormpath in your Spring Boot web application!  Can you believe how easy that was?
+.. only:: sczuul
+
+  Configuration
+  ^^^^^^^^^^^^^^^^^^
+
+  Zuul configuration properties need to be set to tell Zuul where your web application is.  In this quickstart, we'll
+  assume that your webapp is available via ``http://localhost:8080`` and your Spring Cloud Zuul gateway will be available
+  via ``http://localhost:8000``.
+
+  This means web traffic will go to ``http://localhost:8000`` to be handled by the Zuul gateway first, and then
+  the gateway will flow traffic as necessary through to your web application which is available at
+  ``http://localhost:8080``.  Web clients (like browsers or mobile apps) will not communicate directly to
+  ``localhost:8080`` anymore - instead they will only 'see' ``localhost:8000``.
+
+  Here is the minimal config to add to your Spring Cloud Zuul gateway project's application configuration:
+
+  .. code-block:: yaml
+
+    zuul:
+      routes:
+        app:
+          path: /**
+          url: http://localhost:8080
+
+    server:
+      port: 8000
+      use-forward-headers: true
+
+    logging:
+      level:
+        root: INFO
+
+.. only:: springboot
+
+  That's it!  You're ready to start using Stormpath in your Spring Boot web application!
+
+.. only:: sczuul
+
+  That's it!  Stormpath is now enabled in your Spring Cloud Zuul gateway!
 
 Try it!
 -------
 
 If you followed the steps above you will now have fully functional registration, login, logout, forgot password workflows, api authentication and more active on your site!
 
-Don’t believe it? Try it! Start up your web application, and we'll walk you through the basics:
+.. only:: not sczuul
 
-* Navigate to ``/register``. You will see a registration page. Go ahead and enter some information. You should be able to create a user account. Once you’ve created a user account, you’ll be automatically logged in, then redirected back to the root URL (``/`` by default).
-* Navigate to ``/logout``. You will be logged out of your account and then redirected back to ``/login`` by default.
-* Navigate to ``/login``. On the lower-right, click the **Forgot Password?** link, and you'll be shown a form to enter your email.  Enter in your email address and it will send you an email.  Wait for the email and click the link and you'll be able to set a new password!
+  Don’t believe it? Try it! Start up your web application, and we'll walk you through the basics:
+
+  * Navigate to ``/register``. You will see a registration page. Go ahead and enter some information. You should be able to create a user account. Once you’ve created a user account, you’ll be automatically logged in, then redirected back to the root URL (``/`` by default).
+  * Submit a ``POST`` (not a ``GET``) to ``/logout``. You will be logged out of your account and then redirected back to ``/login`` by default.  You can learn more about ``POST`` for logout on the :ref:`Logout <logout>` page.
+  * After logging out, navigate to ``/login``. On the lower-right, click the **Forgot Password?** link, and you'll be shown a form to enter your email.  Enter in your email address and it will send you an email.  Wait for the email and click the link and you'll be able to set a new password!
+
+.. only:: sczuul
+
+  Don’t believe it? Try it!
+
+  #. Start up your Stormpath-enabled Spring Cloud Gateway project, which will run on port 8000 ('localhost eight thousand')
+  #. Start up your web application that 'sits behind' the gateway, running on port 8080 ('localhost eighty eighty')
+
+  Then:
+
+  * Navigate to ``http://localhost:8000/register``. You will see a registration page. Go ahead and enter some information. You should be able to create a user account. Once you’ve created a user account, you’ll be automatically logged in, then redirected back to the root URL (``/`` by default).
+  * Submit a ``POST`` (not a ``GET``) to ``http://localhost:8000/logout``. You will be logged out of your account and then redirected back to ``/login`` by default.  You can learn more about ``POST`` for logout on the :ref:`Logout <logout>` page.
+  * After logging out, navigate to ``http://localhost:8000/login``. On the lower-right, click the **Forgot Password?** link, and you'll be shown a form to enter your email.  Enter in your email address and it will send you an email.  Wait for the email and click the link and you'll be able to set a new password!
 
 Wasn't that easy?!
 
 .. note::
 
-    You probably noticed that you couldn't register a user account without specifying a sufficiently strong password.  This is because, by default,
-    Stormpath enforces certain password strength rules.
+  You probably noticed that you couldn't register a user account without specifying a sufficiently strong password.
+  This is because, by default, Stormpath enforces certain password strength rules.
 
-    If you'd like to change these password strength rules, you can do so easily by visiting the `Stormpath Admin Console`_, navigating to your your application's user ``Directory``, and then changing the "Password Strength Policy".
-
+  If you'd like to change these password strength rules, you can do so easily by visiting the `Stormpath Admin Console`_,
+  navigating to your your application's user ``Directory``, and then changing the "Password Strength Policy".
 
 Any Problems?
 ^^^^^^^^^^^^^
@@ -153,15 +250,9 @@ Did you experience any problems with this quickstart?  It might not have worked 
 
   * you have more than one Application registered with Stormpath.  If this is the case, you'll need to configure your application's Stormpath ``href``, found in the admin console. Once you get the ``href``, add the following to your ``stormpath.properties`` file (where ``YOUR_APPLICATION_ID`` is your application's actual Stormpath Application ID):
 
-.. only:: springboot
+    .. code-block:: properties
 
-  * you have more than one Application registered with Stormpath.  If this is the case, you'll need to configure your application's Stormpath ``href``, found in the admin console. Once you get the ``href``, add the following to your Spring Boot ``application.properties`` file (where ``YOUR_APPLICATION_ID`` is your application's actual Stormpath Application ID):
-
-.. code-block:: properties
-
-  stormpath.application.href = https://api.stormpath.com/v1/applications/YOUR_APPLICATION_ID
-
-.. only:: servlet
+        stormpath.application.href = https://api.stormpath.com/v1/applications/YOUR_APPLICATION_ID
 
   * your web app already uses web frameworks that make heavy use of servlet filters, like Spring or Apache Shiro. These could cause filter ordering conflicts, but the fix is easy - you'll need to manually add a few lines to your web app's ``/WEB-INF/web.xml`` file.  Ensure the following chunk is at or near the top of your filter mapping definitions:
 
@@ -172,17 +263,29 @@ Did you experience any problems with this quickstart?  It might not have worked 
             <url-pattern>/*</url-pattern>
         </filter-mapping>
 
-.. only:: springboot
+.. only:: not servlet
 
-  * your web app already uses web frameworks that make heavy use of servlet filters, like Spring Security or Apache Shiro. These could cause filter ordering conflicts, but the fix is easy - you just need to specify the specific order where you want the Stormpath filter relative to other filters.  You do this by adding the following to your Spring Boot ``application.properties`` file (where ``preferred_value`` is your preferred integer value):
+  * you have more than one Application registered with Stormpath.  If this is the case, you'll need to configure your application's Stormpath ``href``, found in the admin console. Once you get the ``href``, add the following to your Spring Boot application properties or yaml file (where ``YOUR_APPLICATION_ID`` is your application's actual Stormpath Application ID):
 
-    .. code-block:: properties
+    .. code-block:: yaml
 
-        stormpath.web.stormpathFilter.order = preferred_value
+        stormpath:
+          application:
+            href: 'https://api.stormpath.com/v1/applications/YOUR_APPLICATION_ID'
+
+  * your web app already uses web frameworks that make heavy use of servlet filters, like Spring Security or Apache Shiro. These could cause filter ordering conflicts, but the fix is easy - you just need to specify the specific order where you want the Stormpath filter relative to other filters.  You do this by adding the following to your Spring Boot application properties (where ``preferred_value`` is your preferred integer value):
+
+    .. code-block:: yaml
+
+        stormpath:
+          web:
+            stormpathFilter:
+              order: preferred_value #must be an integer
 
     By default, the ``StormpathFilter`` is ordered as ``Ordered.HIGHEST_PRECEDENCE``, but if you have multiple filters with that same order value, you might have to change the order of the other filters as well.
 
-  * you're using the ``spring-boot-starter-parent`` as a ``parent`` and you are getting errors related to Spring Security. The ``stormpath-default-spring-boot-starter`` relies on Spring Security 4.1.x. The current release of the ``spring-boot-starter-parent`` is 1.4.0 and it also relies on Spring Security 4.1.x. Prior versions of the ``spring-boot-starter-parent`` rely on Spring Security 3.2.x. Our first recommendation is to use the latest version of the ``spring-boot-starter-parent``. However, if you must use earlier versions, there is a simple solution to this, which is to override the Spring Security version in your ``pom.xml``
+
+  * you're using the ``spring-boot-starter-parent`` as a ``parent`` and you are getting errors related to Spring Security. The Stormpath starter relies on Spring Security 4.1.x. The current release of the ``spring-boot-starter-parent`` is 1.4.0 and it also relies on Spring Security 4.1.x. Prior versions of the ``spring-boot-starter-parent`` rely on Spring Security 3.2.x. Our first recommendation is to use the latest version of the ``spring-boot-starter-parent``. However, if you must use earlier versions, there is a simple solution to this, which is to override the Spring Security version in your ``pom.xml``
 
     .. code-block:: xml
         :emphasize-lines: 15

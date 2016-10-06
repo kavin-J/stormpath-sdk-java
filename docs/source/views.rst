@@ -75,7 +75,7 @@ All of the default built-in views are all based on the same principle: they are 
 
   Finally, if this proves too cumbersome or you just want total control, you might want to define your own `view template`_ and reference your own CSS file in the template and ignore any of the plugin default css files.
 
-.. only:: springboot
+.. only:: springboot or sczuul
 
   Thymeleaf Views
   ---------------
@@ -230,7 +230,7 @@ Internationalization (i18n)
 
   After completing these steps, all plugin views will reflect your custom template.
 
-.. only:: springboot
+.. only:: springboot or sczuul
 
   In the above example, you can see one of two meaningful lines:
 

@@ -18,9 +18,9 @@ Refreshingly, the |project| doesn't require any configuration at all as long as 
   #. Your web application can read the ``$HOME/.stormpath/apiKey.properties`` file :ref:`mentioned in the Quickstart <get-api-key>`.
   #. You have only one Application registered with Stormpath.
 
-.. only:: springboot
+.. only:: not servlet
 
-  #. You added the |project| .jar and its transitive dependencies to your web application's ``/WEB-INF/lib`` directory.  This happens automatically if you use a Maven-compatible build tool like Maven or Gradle to :ref:`specify the stormpath-thymeleaf-spring-boot-starter dependency <dependency-jar>` in your project build configuration.
+  #. You added the |project| .jar and its transitive dependencies to your web application's ``/WEB-INF/lib`` directory.  This happens automatically if you use a Maven-compatible build tool like Maven or Gradle to :ref:`specify the Stormpath starter dependency <dependency-jar>` in your project build configuration.
   #. Your web application can read the ``$HOME/.stormpath/apiKey.properties`` file :ref:`mentioned in the Quickstart <get-api-key>`.
   #. You have only one Application registered with Stormpath.
 
@@ -163,7 +163,7 @@ If all of these conditions cannot be met, then you will have to specify some min
 
   If you cannot rely on accessing the default ``$HOME/.stormpath/apiKey.properties`` file, Environment Variables or a different private local file (with restricted read permissions) is usually a safer alternative when defining passwords or secret values than shared files or JVM System Properties.
 
-.. only:: springboot
+.. only:: not servlet
 
   Property Overrides
   ------------------
@@ -229,14 +229,14 @@ The API Key used by the SDK Client will be acquired from the following locations
   * Any ``stormpath.client.apiKey.id`` value discovered from inspected :ref:`property locations <stormpath.properties locations>`
   * Any ``stormpath.client.apiKey.secret`` value discovered from inspected :ref:`property locations <stormpath.properties locations>`
 
-.. only:: springboot
+.. only:: not servlet
 
   * ``$HOME/.stormpath/apiKey.properties`` file
   * Any ``stormpath.client.apiKey.id`` value discovered from Spring property placeholder locations
   * Any ``stormpath.client.apiKey.secret`` value discovered from Spring property placeholder locations
 
 .. caution::
-   While ``stormpath.client.apiKey.secret`` can be configured as a property in a file, please be aware of the :ref:`security considerations <stormpath.properties locations>` of files shared with other people.
+   While ``stormpath.client.apiKey.secret`` can be configured as a property in a file, please be aware of the :ref:`security considerations <property security considerations>` of files shared with other people.
 
 HTTP Proxy
 ~~~~~~~~~~
@@ -265,7 +265,7 @@ If you deploy your app on Google App Engine however, you might experience some p
 
 If your application is not deployed on Google App Engine, we recommend that you *do not* set this property.
 
-.. only:: springboot
+.. only:: not servlet
 
   Caching
   ~~~~~~~
@@ -294,7 +294,7 @@ Usage
 
      Client client = ClientResolver.INSTANCE.getClient(servletContext);
 
-.. only:: springboot
+.. only:: not servlet
 
   You may access the ``Client`` instance via normal Spring autowiring.  For example:
 
@@ -342,7 +342,7 @@ Usage
 
      Application myApp = ApplicationResolver.INSTANCE.getApplication(servletContext);
 
-.. only:: springboot
+.. only:: not servlet
 
   You may access the ``Application`` instance if desired (for example, searching your application's user accounts, creating groups, etc) using normal Spring autowiring:
 

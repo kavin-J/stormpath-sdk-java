@@ -63,14 +63,20 @@ elif tags.has('springboot'):
     language_name = u'Spring Boot'
     language_slug = u'spring-boot'
 
+elif tags.has('sczuul'):
+    language_name = u'Zuul Spring Cloud Starter'
+    language_slug = u'zuul-spring-cloud-starter'
+
 else:
     raise ValueError('Unknown LANGUAGE tag.')
 
 # General information about the project.
 if tags.has('servlet'):
     project = u'Stormpath Java Servlet Plugin'
+elif tags.has('sczuul'):
+    project = u'Stormpath Zuul Spring Cloud Starter'
 else:
-    project = u'Spring Boot Stormpath Web Starter'
+    project = u'Stormpath Default Spring Boot Starter'
 
 copyright = '%s, Stormpath, Inc' % datetime.datetime.now().year
 author = u'Stormpath'
@@ -136,9 +142,13 @@ if tags.has('servlet'):
     rst_prolog = """
     .. |project| replace:: Stormpath Java Servlet Plugin
     """
+elif tags.has('sczuul'):
+    rst_prolog = """
+    .. |project| replace:: Stormpath Zuul Spring Cloud Starter
+    """
 else:
     rst_prolog = """
-    .. |project| replace:: Spring Boot Stormpath Web Starter
+    .. |project| replace:: Stormpath Default Spring Boot Starter
     """
 
 # -- Options for HTML output ----------------------------------------------
@@ -225,8 +235,10 @@ html_show_sourcelink = False
 # Output file base name for HTML help builder.
 if tags.has('servlet'):
     htmlhelp_basename = 'StormpathServletPlugindoc'
+elif tags.has('sczuul'):
+    htmlhelp_basename = 'StormpathZuulSpringCloudStarterDoc'
 else:
-    htmlhelp_basename = 'SpringBootStormpathWebStarterDoc'
+    htmlhelp_basename = 'StormpathDefaultSpringBootStarterDoc'
 
 # Make the default syntax highlighting target Javascript code snippets.
 highlight_language = 'java'
@@ -252,9 +264,14 @@ if tags.has('servlet'):
       ('index', 'StormpathServletPlugin.tex', u'Stormpath Java Servlet Plugin Documentation',
        u'Stormpath, Inc.', 'manual'),
     ]
+elif tags.has('sczuul'):
+    latex_documents = [
+      ('index', 'StormpathZuulSpringCloudStarter.tex', u'Stormpath Zuul Spring Cloud Starter Documentation',
+       u'Stormpath, Inc.', 'manual'),
+    ]
 else:
     latex_documents = [
-        ('index', 'SpringBootStormpathWebStarter.tex', u'Spring Boot Stormpath Web Starter Documentation',
+        ('index', 'StormpathDefaultSpringBootStarter.tex', u'Stormpath Default Spring Starter Documentation',
          u'Stormpath, Inc.', 'manual'),
     ]
 
@@ -309,10 +326,16 @@ if tags.has('servlet'):
          u'Stormpath', 'StormpathServletPlugin', 'Documentation for the Stormpath Java Servlet Plugin.',
          'Miscellaneous'),
     ]
+elif tags.has('sczuul'):
+    texinfo_documents = [
+        (master_doc, 'StormpathZuulSpringCloudStarter', u'Stormpath Zuul Spring Cloud Starter Documentation',
+         u'Stormpath', 'StormpathZuulSpringCloudStarter', 'Documentation for the Stormpath Zuul Spring Cloud Starter.',
+        'Miscellaneous'),
+    ]
 else:
     texinfo_documents = [
-        (master_doc, 'SpringBootStormpathWebStarter', u'Spring Boot Stormpath Web Starter Documentation',
-         u'Stormpath', 'SpringBootStormpathWebStarter', 'Documentation for the Spring Boot Stormpath Web Starter.',
+        (master_doc, 'StormpathDefaultSpringBootStarter', u'Stormpath Default Spring Boot Starter Documentation',
+         u'Stormpath', 'StormpathDefaultSpringBootStarter', 'Documentation for the Stormpath Default Spring Boot Starter.',
          'Miscellaneous'),
     ]
 
