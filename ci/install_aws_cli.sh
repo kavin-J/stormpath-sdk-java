@@ -1,4 +1,4 @@
- #! /bin/bash
+#! /bin/bash
 
 mkdir -p ~/usr/local/aws/bin
 curl -s "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"

@@ -114,7 +114,7 @@ Request Locale
 i18n.properties
 ---------------
 
-.. literalinclude:: ../../extensions/servlet/src/main/resources/com/stormpath/sdk/servlet/i18n.properties
+.. literalinclude:: ../../../../extensions/servlet/src/main/resources/com/stormpath/sdk/servlet/i18n.properties
    :language: properties
 
 .. _Java Resource Bundle: http://docs.oracle.com/javase/tutorial/i18n/resbundle/concept.html

@@ -177,7 +177,7 @@ i18n
 
 The :ref:`i18n` message keys used in the default register view have names prefixed with ``stormpath.web.register.``:
 
-.. literalinclude:: ../../extensions/servlet/src/main/resources/com/stormpath/sdk/servlet/i18n.properties
+.. literalinclude:: ../../../../extensions/servlet/src/main/resources/com/stormpath/sdk/servlet/i18n.properties
    :language: properties
    :lines: 49-87
 
