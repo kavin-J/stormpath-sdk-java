@@ -1,4 +1,7 @@
 scms {
+
+    excludes = ['build.sh', 'build/**', 'Makefile', 'readme.md']
+
 }
 
 environments {
