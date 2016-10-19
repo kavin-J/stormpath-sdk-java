@@ -227,7 +227,7 @@ which is less readable and not very convenient.
 .. _request sdk client:
 
 Stormpath Client
---------------------
+----------------
 
 .. only:: servlet
 
