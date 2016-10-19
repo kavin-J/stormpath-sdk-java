@@ -3,7 +3,7 @@
 source ./ci/common.sh
 
 # Update the path if scms is not available
-command -v scms >/dev/null 2>&1 || export PATH="~/usr/local/scms/current/bin:$PATH"
+command -v scms >/dev/null 2>&1 || export PATH="$HOME/usr/local/scms/current/bin:$PATH"
 
 info "Generating guides..."
 git submodule init

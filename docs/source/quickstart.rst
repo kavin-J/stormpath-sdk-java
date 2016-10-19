@@ -22,7 +22,7 @@ Topics:
 
 .. contents::
      :local:
-     :depth: 1
+     :depth: 2
 
 .. _get-api-key:
 
@@ -33,169 +33,166 @@ Add the |project|
 
 .. _dependency-jar:
 
-.. only:: servlet
+#if( $servlet )
 
-  .. _servlet-plugin-jar:
+.. _servlet-plugin-jar:
 
-  This step allows you to deploy Stormpath *without a single line of code or configuration*.  How amazing is that?
+This step allows you to deploy Stormpath *without a single line of code or configuration*.  How amazing is that?
 
-  Using your favorite dependency resolution build tool like Maven or Gradle, ensure your web (.war) project/module depends on stormpath-servlet-plugin-|version|.jar. For example:
+Using your favorite dependency resolution build tool like Maven or Gradle, ensure your web (.war) project/module depends on ``${maven.project.artifactId}-${maven.project.version}.jar``. For example:
 
-  **Maven**:
+**Maven**:
 
-  .. parsed-literal::
+.. code-block:: xml
 
-      <dependency>
-          <groupId>com.stormpath.sdk</groupId>
-          <artifactId>stormpath-servlet-plugin</artifactId>
-          <version>\ |version|\ </version>
-      </dependency>
+    <dependency>
+        <groupId>${maven.project.groupId}</groupId>
+        <artifactId>${maven.project.artifactId}</artifactId>
+        <version>${maven.project.version}</version>
+    </dependency>
 
-  **Gradle**:
+**Gradle**:
 
-  .. parsed-literal::
+.. code-block:: groovy
 
-      dependencies {
-          compile 'com.stormpath.sdk:stormpath-servlet-plugin:\ |version|\ '
-      }
+    dependencies {
+        compile '${maven.project.groupId}:${maven.project.artifactId}:${maven.project.version}'
+    }
 
-  Ensure that all resolved dependencies are in your web application's ``/WEB-INF/lib`` directory.
+Ensure that all resolved dependencies are in your web application's ``/WEB-INF/lib`` directory.
 
-  That's it!  You're ready to start using Stormpath in your web application!  Can you believe how easy that was?
+That's it!  You're ready to start using Stormpath in your web application!  Can you believe how easy that was?
 
-.. only:: springboot
+#elseif( $springboot )
 
-  This step allows you to enable Stormpath in a Spring Boot web app with *very minimal* configuration.
-  It includes Stormpath Spring Security, Stormpath Spring WebMVC and Stormpath Thymeleaf templates.
+This step allows you to enable Stormpath in a Spring Boot web app with *very minimal* configuration.
+It includes Stormpath Spring Security, Stormpath Spring WebMVC and Stormpath Thymeleaf templates.
 
-  Using your favorite dependency resolution build tool like Maven or Gradle, add the stormpath-default-spring-boot-starter-|version|.jar to your project dependencies. For example:
+Using your favorite dependency resolution build tool like Maven or Gradle, add the ``${maven.project.artifactId}-${maven.project.version}.jar`` to your project dependencies. For example:
 
-  **Maven**:
+**Maven**:
 
-  .. parsed-literal::
+.. code-block:: xml
 
-      <dependency>
-          <groupId>com.stormpath.spring</groupId>
-          <artifactId>stormpath-default-spring-boot-starter</artifactId>
-          <version>\ |version|\ </version>
-      </dependency>
+    <dependency>
+        <groupId>${maven.project.groupId}</groupId>
+        <artifactId>${maven.project.artifactId}</artifactId>
+        <version>${maven.project.version}</version>
+    </dependency>
 
-  **Gradle**:
+**Gradle**:
 
-  .. parsed-literal::
+.. parsed-literal::
 
-      dependencies {
-          compile 'com.stormpath.spring:stormpath-default-spring-boot-starter:\ |version|\ '
-      }
+    dependencies {
+        compile '${maven.project.groupId}:${maven.project.artifactId}:${maven.project.version}'
+    }
 
+#elseif( $sczuul )
 
-.. only:: sczuul
+This step allows you to enable Stormpath in a Spring Cloud Zuul ${apptype} project with *very minimal* configuration.
+It includes Stormpath Spring Security, Stormpath Spring WebMVC and Stormpath Thymeleaf templates.
 
-  This step allows you to enable Stormpath in a Spring Cloud Zuul proxy/gateway project with *very minimal* configuration.
-  It includes Stormpath Spring Security, Stormpath Spring WebMVC and Stormpath Thymeleaf templates.
+Using your favorite dependency resolution build tool like Maven or Gradle, add the ``${maven.project.artifactId}-${maven.project.version}.jar`` to your project dependencies. For example:
 
-  Using your favorite dependency resolution build tool like Maven or Gradle, add the stormpath-zuul-spring-cloud-starter-|version|.jar to your project dependencies. For example:
+**Maven**:
 
-  **Maven**:
+.. parsed-literal::
 
-  .. parsed-literal::
+    <dependency>
+        <groupId>${maven.project.groupId}</groupId>
+        <artifactId>${maven.project.artifactId}</artifactId>
+        <version>${maven.project.version}</version>
+    </dependency>
 
-      <dependency>
-          <groupId>com.stormpath.spring</groupId>
-          <artifactId>stormpath-zuul-spring-cloud-starter</artifactId>
-          <version>\ |version|\ </version>
-      </dependency>
+**Gradle**:
 
-  **Gradle**:
+.. parsed-literal::
 
-  .. parsed-literal::
+    dependencies {
+        compile '${maven.project.groupId}:${maven.project.artifactId}:${maven.project.version}'
+    }
 
-      dependencies {
-          compile 'com.stormpath.spring:stormpath-zuul-spring-cloud-starter:\ |version|\ '
-      }
+#end
 
+#if( $springboot || $sczuul )
 
-.. only:: springboot or sczuul
+Spring Security
+^^^^^^^^^^^^^^^
 
-  Spring Security
-  ^^^^^^^^^^^^^^^
+The |project| assumes Spring Security will be used to secure your ${apptype} by default.  To ensure this
+works correctly, you will need a Spring Security configuration class and apply the ``stormpath()`` hook:
 
-  .. only:: sczuul
+.. code-block:: java
+    :emphasize-lines: 7
 
-    The |project| assumes Spring Security will be used to secure your Zuul proxy/gateway by default.  To ensure this
-    works correctly, you will need a Spring Security configuration class and apply the ``stormpath()`` hook:
+    import static com.stormpath.spring.config.StormpathWebSecurityConfigurer.stormpath;
 
-  .. only:: springboot
+    @Configuration
+    public class SpringSecurityWebAppConfig extends WebSecurityConfigurerAdapter {
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.apply(stormpath());
+        }
+    }
 
-    The |project| assumes Spring Security by default.  But to ensure they work
-    together, you will need a Spring Security configuration class and apply the ``stormpath()`` hook:
+Without this, you will see a browser popup prompting for authentication, which is the default basic authentication behavior for Spring Security.
 
-  .. code-block:: java
-      :emphasize-lines: 7
+Also, by default, all paths are locked down with Spring Security. Stormpath's Spring Security integration follows this idiomatic behavior.
 
-      import static com.stormpath.spring.config.StormpathWebSecurityConfigurer.stormpath;
+Disabling Spring Security
+"""""""""""""""""""""""""
 
-      @Configuration
-      public class SpringSecurityWebAppConfig extends WebSecurityConfigurerAdapter {
-          @Override
-          protected void configure(HttpSecurity http) throws Exception {
-              http.apply(stormpath());
-          }
-      }
+If you do not want to use Spring Security, do not add the ``SpringSecurityWebAppConfig`` class shown above (or just comment out the ``http.apply(stormpath())`` line if you do not want to remove the class).  Also set the following two config properties:
 
-  Without this, you will see a browser popup prompting for authentication, which is the default basic authentication behavior for Spring Security.
+.. code-block:: yaml
 
-  Also, by default, all paths are locked down with Spring Security. Stormpath's Spring Security integration follows this idiomatic behavior.
+   # disable Stormpath's Spring Security support:
+   stormpath:
+     spring:
+       security:
+         enabled: false
 
-  Disabling Spring Security
-  """""""""""""""""""""""""
+   # disable Spring Security entirely:
+   security:
+     basic:
+       enabled: false
 
-  If you do not want to use Spring Security, do not add the ``SpringSecurityWebAppConfig`` class shown above (or just comment out the ``http.apply(stormpath())`` line if you do not want to remove the class).  Also set the following two config properties:
+#end
 
-  .. code-block:: yaml
+#if( $sczuul )
 
-    # disable Stormpath's Spring Security support:
-    stormpath:
-      spring:
-        security:
-          enabled: false
+Configuration
+^^^^^^^^^^^^^
 
-    # disable Spring Security entirely:
-    security:
-      basic:
-        enabled: false
+Zuul configuration properties need to be set to tell Zuul where your web application is.  In this quickstart, we'll
+assume that your webapp is available via ``http://localhost:8080`` and your Spring Cloud Zuul gateway will be available
+via ``http://localhost:8000``.
 
-.. only:: sczuul
+This means web traffic will go to ``http://localhost:8000`` to be handled by the Zuul gateway first, and then
+the gateway will flow traffic as necessary through to your web application which is available at
+``http://localhost:8080``.  Web clients (like browsers or mobile apps) will not communicate directly to
+``localhost:8080`` anymore - instead they will only 'see' ``localhost:8000``.
 
-  Configuration
-  ^^^^^^^^^^^^^^^^^^
+Here is the minimal config to add to your Spring Cloud Zuul gateway project's application configuration:
 
-  Zuul configuration properties need to be set to tell Zuul where your web application is.  In this quickstart, we'll
-  assume that your webapp is available via ``http://localhost:8080`` and your Spring Cloud Zuul gateway will be available
-  via ``http://localhost:8000``.
+.. code-block:: yaml
 
-  This means web traffic will go to ``http://localhost:8000`` to be handled by the Zuul gateway first, and then
-  the gateway will flow traffic as necessary through to your web application which is available at
-  ``http://localhost:8080``.  Web clients (like browsers or mobile apps) will not communicate directly to
-  ``localhost:8080`` anymore - instead they will only 'see' ``localhost:8000``.
+   zuul:
+     routes:
+       app:
+         path: /**
+         url: http://localhost:8080
 
-  Here is the minimal config to add to your Spring Cloud Zuul gateway project's application configuration:
+   server:
+     port: 8000
+     use-forward-headers: true
 
-  .. code-block:: yaml
+   logging:
+     level:
+       root: INFO
 
-    zuul:
-      routes:
-        app:
-          path: /**
-          url: http://localhost:8080
-
-    server:
-      port: 8000
-      use-forward-headers: true
-
-    logging:
-      level:
-        root: INFO
+#end
 
 .. only:: springboot
 

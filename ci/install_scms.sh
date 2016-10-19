@@ -2,8 +2,8 @@
 
 SCMS_VERSION="0.3.0"
 
-mkdir -p ~/usr/local/scms
+mkdir -p "$HOME/usr/local/scms"
 curl -s "http://repo.maven.apache.org/maven2/com/leshazlewood/scms/scms/$SCMS_VERSION/scms-$SCMS_VERSION.zip" -o scms.zip
-unzip scms.zip -d ~/usr/local/scms
-ln -s "~/usr/local/scms/scms-$SCMS_VERSION" ~/usr/local/scms/current
-export PATH="~/usr/local/scms/current/bin:$PATH"
+unzip scms.zip -d "$HOME/usr/local/scms"
+ln -s "$HOME/usr/local/scms/scms-$SCMS_VERSION" "$HOME/usr/local/scms/current"
+export PATH="$HOME/usr/local/scms/current/bin:$PATH"

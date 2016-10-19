@@ -73,10 +73,13 @@ else:
 # General information about the project.
 if tags.has('servlet'):
     project = u'Stormpath Java Servlet Plugin'
+    apptype = u'application'
 elif tags.has('sczuul'):
     project = u'Stormpath Zuul Spring Cloud Starter'
+    apptype = u'gateway'
 else:
     project = u'Stormpath Default Spring Boot Starter'
+    apptype = u'application'
 
 copyright = '%s, Stormpath, Inc' % datetime.datetime.now().year
 author = u'Stormpath'
@@ -141,14 +144,17 @@ pygments_style = 'sphinx'
 if tags.has('servlet'):
     rst_prolog = """
     .. |project| replace:: Stormpath Java Servlet Plugin
+    .. |apptype| replace:: application
     """
 elif tags.has('sczuul'):
     rst_prolog = """
     .. |project| replace:: Stormpath Zuul Spring Cloud Starter
+    .. |apptype| replace:: gateway
     """
 else:
     rst_prolog = """
     .. |project| replace:: Stormpath Default Spring Boot Starter
+    .. |apptype| replace:: application
     """
 
 # -- Options for HTML output ----------------------------------------------

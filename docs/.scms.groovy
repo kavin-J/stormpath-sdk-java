@@ -1,7 +1,18 @@
 def baseExcludes = ['build.sh', 'build/**', 'Makefile', 'readme.md']
 
+//find what version we're on:
+def projectVersion = new XmlSlurper().parse(new File("../pom.xml").newReader()).version.text()
+
 scms {
     excludes = baseExcludes
+
+    model {
+        apptype = 'application'
+        maven.project.version = projectVersion
+    }
+
+    model.apptype = 'application'
+
 
     patterns {
 
@@ -34,6 +45,8 @@ environments {
                         'source/appendix/verify.rst']
             model {
                 servlet = true
+                maven.project.groupId = 'com.stormpath.sdk'
+                maven.project.artifactId = 'stormpath-servlet-plugin'
             }
         }
     }
@@ -43,6 +56,9 @@ environments {
             excludes = springExcludes
             model {
                 sczuul = true
+                apptype = 'gateway'
+                maven.project.groupId = 'com.stormpath.spring'
+                maven.project.artifactId = 'stormpath-zuul-spring-cloud-starter'
             }
         }
     }
@@ -52,6 +68,8 @@ environments {
             excludes = springExcludes
             model {
                 springboot = true
+                maven.project.groupId = 'com.stormpath.spring'
+                maven.project.artifactId = 'stormpath-default-spring-boot-starter'
             }
         }
     }

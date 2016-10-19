@@ -3,7 +3,7 @@
 About
 =====
 
-Are you building a web application, but not sure if the |project| is right for you?  This page will help you decide
+Are you building a web $apptype, but not sure if the |project| is right for you?  This page will help you decide
 if is a good fit!
 
 
@@ -39,18 +39,18 @@ What is the |project|?
 
   The |project| is a drop-in plugin for Servlet-based web applications that makes it *incredibly* simple to add user management and authentication to your Java-based web application.
 
-.. only:: springboot
-
-  The |project| aims to completely automate all user registration, login, authentication and authorization workloads as well as properly secure your web app.  It is completely flexible - use only the functionality you need or leverage the entire feature set.
-
 .. only:: sczuul
 
   .. include:: about_sczuul.rst
 
+.. only:: not servlet or not sczuul
+
+  The |project| aims to completely automate all user registration, login, authentication and authorization workloads as well as properly secure your web $apptype.  It is completely flexible - use only the functionality you need or leverage the entire feature set.
+
 Who should use Stormpath?
 -------------------------
 
-Stormpath is a powerful and secure service.  The |project| makes it even easier to use in web applications on the JVM, but it might not be for everyone!
+Stormpath is a powerful and secure service.  The |project| makes it even easier to use in web ${apptype}s on the JVM, but it might not be for everyone!
 
 You might want to use Stormpath if:
 
