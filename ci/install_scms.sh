@@ -1,6 +1,6 @@
 #! /bin/bash
 
-SCMS_VERSION="0.2.0"
+SCMS_VERSION="0.3.0"
 
 mkdir -p ~/usr/local/scms
 curl -s "http://repo.maven.apache.org/maven2/com/leshazlewood/scms/scms/$SCMS_VERSION/scms-$SCMS_VERSION.zip" -o scms.zip

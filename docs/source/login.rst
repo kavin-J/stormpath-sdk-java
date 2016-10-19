@@ -197,6 +197,7 @@ Cookie Config
 
 You can control the authentication cookie behavior by setting various ``stormpath.web.accessTokenCookie``.\* configuration properties:
 
+#[[
 ============================================================================================================ ================================================ ==========================================================
 `Cookie <http://docs.oracle.com/javaee/7/api/javax/servlet/http/Cookie.html>`_ property                      Config Property Name                             Default Value
 ============================================================================================================ ================================================ ==========================================================
@@ -218,6 +219,7 @@ You need to set the refresh token behavior by setting various ``stormpath.web.re
 `httpOnly <http://docs.oracle.com/javaee/7/api/javax/servlet/http/Cookie.html#setHttpOnly(boolean)>`_        ``stormpath.web.refreshTokenCookie.httpOnly``    ``true``
 `secure <http://docs.oracle.com/javaee/6/api/javax/servlet/SessionCookieConfig.html#setSecure(boolean)>`_    ``stormpath.web.refreshTokenCookie.secure``      ``null``
 ============================================================================================================ ================================================ ==========================================================
+]]#
 
 Some notes about the default values:
 

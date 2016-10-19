@@ -1,5 +1,14 @@
 scms {
     excludes = ['build.sh', 'build/**', 'Makefile', 'readme.md']
+
+    patterns {
+
+        '**/*.rst' {
+            renderer = 'velocity' //ordinarily only looks for files with vtl extension
+            outputFileExtension = 'rst' //ordinarily html
+        }
+
+    }
 }
 
 environments {
