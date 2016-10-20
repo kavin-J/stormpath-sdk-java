@@ -25,6 +25,7 @@ Refreshingly, the |project| doesn't require any configuration at all as long as 
 #. You have only one Application registered with Stormpath.
 
 If all of these conditions cannot be met, then you will have to specify some minimal configuration (but not much!) as described below.
+
 #end
 
 #if( $servlet )

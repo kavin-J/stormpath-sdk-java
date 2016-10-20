@@ -82,7 +82,7 @@ Using your favorite dependency resolution build tool like Maven or Gradle, add t
 
 **Gradle**:
 
-.. parsed-literal::
+.. code-block:: groovy
 
     dependencies {
         compile '${maven.project.groupId}:${maven.project.artifactId}:${maven.project.version}'
@@ -97,7 +97,7 @@ Using your favorite dependency resolution build tool like Maven or Gradle, add t
 
 **Maven**:
 
-.. parsed-literal::
+.. code-block:: xml
 
     <dependency>
         <groupId>${maven.project.groupId}</groupId>
@@ -107,7 +107,7 @@ Using your favorite dependency resolution build tool like Maven or Gradle, add t
 
 **Gradle**:
 
-.. parsed-literal::
+.. code-block:: groovy
 
     dependencies {
         compile '${maven.project.groupId}:${maven.project.artifactId}:${maven.project.version}'
