@@ -39,7 +39,6 @@ import com.stormpath.sdk.servlet.filter.ServerUriResolver;
 import com.stormpath.sdk.servlet.filter.StormpathFilter;
 import com.stormpath.sdk.servlet.filter.UsernamePasswordRequestFactory;
 import com.stormpath.sdk.servlet.filter.WrappedServletRequestFactory;
-import com.stormpath.sdk.servlet.filter.account.AuthenticationResultSaver;
 import com.stormpath.sdk.servlet.filter.account.JwtAccountResolver;
 import com.stormpath.sdk.servlet.filter.account.JwtSigningKeyResolver;
 import com.stormpath.sdk.servlet.filter.oauth.AccessTokenAuthenticationRequestFactory;
@@ -51,11 +50,10 @@ import com.stormpath.sdk.servlet.http.authc.AccountStoreResolver;
 import com.stormpath.sdk.servlet.http.authc.HeaderAuthenticator;
 import com.stormpath.sdk.servlet.http.authc.HttpAuthenticationScheme;
 import com.stormpath.sdk.servlet.idsite.IdSiteOrganizationContext;
-import com.stormpath.sdk.servlet.mvc.Controller;
-import com.stormpath.sdk.servlet.mvc.ErrorModelFactory;
-import com.stormpath.sdk.servlet.mvc.ExpandsResolver;
-import com.stormpath.sdk.servlet.mvc.RequestFieldValueResolver;
+import com.stormpath.sdk.servlet.mvc.*;
 import com.stormpath.sdk.servlet.mvc.provider.AccountStoreModelFactory;
+import com.stormpath.sdk.servlet.util.GrantTypeStatusValidator;
+import com.stormpath.spring.mvc.AccessTokenControllerConfig;
 import com.stormpath.spring.mvc.ChangePasswordControllerConfig;
 import com.stormpath.spring.mvc.MessageContextRegistrar;
 import org.springframework.beans.factory.InitializingBean;
@@ -512,5 +510,21 @@ public class StormpathWebMvcConfiguration extends AbstractStormpathWebMvcConfigu
     @Bean
     public ControllerConfig stormpathLogoutConfig() {
         return super.stormpathLogoutConfig();
+    }
+
+    /**
+     * @since 1.2.0
+     */
+    @Bean
+    public AccessTokenControllerConfig stormpathAccessTokenConfig(){
+        return super.stormpathAccessTokenConfig();
+    }
+
+    /**
+     * @since 1.2.0
+     */
+    @Bean
+    public GrantTypeStatusValidator stormpathGrantTypeStatusValidator(){
+        return super.stormpathGrantTypeStatusValidator();
     }
 }

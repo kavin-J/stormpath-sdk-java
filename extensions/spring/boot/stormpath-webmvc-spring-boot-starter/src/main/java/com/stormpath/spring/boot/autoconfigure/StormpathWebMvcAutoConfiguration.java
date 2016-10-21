@@ -15,7 +15,6 @@
  */
 package com.stormpath.spring.boot.autoconfigure;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stormpath.sdk.account.Account;
 import com.stormpath.sdk.application.Application;
 import com.stormpath.sdk.authc.AuthenticationResult;
@@ -52,15 +51,14 @@ import com.stormpath.sdk.servlet.http.authc.AccountStoreResolver;
 import com.stormpath.sdk.servlet.http.authc.HeaderAuthenticator;
 import com.stormpath.sdk.servlet.http.authc.HttpAuthenticationScheme;
 import com.stormpath.sdk.servlet.idsite.IdSiteOrganizationContext;
-import com.stormpath.sdk.servlet.mvc.Controller;
-import com.stormpath.sdk.servlet.mvc.ExpandsResolver;
-import com.stormpath.sdk.servlet.mvc.RequestFieldValueResolver;
-import com.stormpath.sdk.servlet.mvc.View;
+import com.stormpath.sdk.servlet.mvc.*;
 import com.stormpath.sdk.servlet.mvc.provider.AccountStoreModelFactory;
+import com.stormpath.sdk.servlet.util.GrantTypeStatusValidator;
 import com.stormpath.spring.config.AbstractStormpathWebMvcConfiguration;
 import com.stormpath.spring.config.AccessTokenCookieProperties;
 import com.stormpath.spring.config.RefreshTokenCookieProperties;
 import com.stormpath.spring.config.StormpathMessageSourceConfiguration;
+import com.stormpath.spring.mvc.AccessTokenControllerConfig;
 import com.stormpath.spring.mvc.ChangePasswordControllerConfig;
 import com.stormpath.spring.mvc.MessageContextRegistrar;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -658,5 +656,23 @@ public class StormpathWebMvcAutoConfiguration extends AbstractStormpathWebMvcCon
     @ConditionalOnMissingBean(name = "stormpathVerifyConfig")
     public ControllerConfig stormpathVerifyConfig() {
         return super.stormpathVerifyConfig();
+    }
+
+    /**
+     * @since 1.2.0
+     */
+    @Bean
+    @ConditionalOnMissingBean(name = "stormpathAccessTokenConfig")
+    public AccessTokenControllerConfig stormpathAccessTokenConfig(){
+        return super.stormpathAccessTokenConfig();
+    }
+
+    /**
+     * @since 1.2.0
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public GrantTypeStatusValidator stormpathGrantTypeStatusValidator() {
+        return super.stormpathGrantTypeStatusValidator();
     }
 }
